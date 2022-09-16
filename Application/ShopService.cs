@@ -13,8 +13,7 @@ public class ShopService : IShopService
 
         if (y.Latitude >= -90.0 && y.Longitude >= -90.0 && y.Latitude <= 90.0 && y.Longitude <= 90.0)
         { 
-            List<Entities.Shop> sortedList = source.OrderBy(x => new GeoCoordinate(x._gpsLocation.Longitude, x._gpsLocation.Latitude).GetDistanceTo(new GeoCoordinate(y.Longitude, y.Latitude))).ToList();
-            return sortedList;
+            return source.OrderBy(x => new GeoCoordinate(x._gpsLocation.Longitude, x._gpsLocation.Latitude).GetDistanceTo(new GeoCoordinate(y.Longitude, y.Latitude))).ToList();
         }
         else
         {
