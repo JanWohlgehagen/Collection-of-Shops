@@ -33,8 +33,28 @@ public class ShopService : IShopService
         return shopsNearby;
     }
 
-    public List<Entities.Shop> FilterByLocation(List<Entities.Shop> source, GeoCoordinate x, int width, int height)
+    public List<Entities.Shop> FilterByLocation(List<Entities.Shop> source, GeoCoordinate y, int width, int height)
     {
-        throw new NotImplementedException();
+        if (source == null || y == null)
+            throw new NullReferenceException("Something went wrong, try again later.");
+        if (source.Count <= 0)
+            throw new ArgumentException("Unable to find shops near your location.");
+
+        var filteredSource = source;
+
+        if (width < 0) // Negative width values
+           filteredSource = filteredSource.Where(s =>
+                s._gpsLocation.Latitude <= y.Latitude && s._gpsLocation.Latitude >= y.Latitude + width).ToList();
+        else // Positive width values
+            filteredSource = filteredSource.Where(s =>
+                s._gpsLocation.Latitude >= y.Latitude && s._gpsLocation.Latitude <= y.Latitude + width).ToList();
+        if (height < 0) // Negative height values
+            filteredSource = filteredSource.Where(s =>
+                s._gpsLocation.Longitude <= y.Longitude && s._gpsLocation.Longitude >= y.Longitude + height).ToList();
+        else // Positive height values
+            filteredSource = filteredSource.Where(s =>
+                s._gpsLocation.Longitude >= y.Longitude && s._gpsLocation.Longitude <= y.Longitude + height).ToList();
+
+        return filteredSource;
     }
 }

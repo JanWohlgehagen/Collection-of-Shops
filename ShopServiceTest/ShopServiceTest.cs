@@ -90,7 +90,53 @@ public class UnitTest1
         var ex = Assert.Throws<ArgumentException>(() => _shopService.SortByDistance(source, geoLocation));
         Assert.Equal(errorMsg, ex.Message);
     }
+    
+    
+    [Theory]
+    [InlineData(0.0, 0.0, 45, 45, 4)] // Quadrant I (+, +)
+    [InlineData(0.0, 0.0, -45, 45, 3)] // Quadrant II (-, +)
+    [InlineData(0.0, 0.0, -45, -45, 3)] // Quadrant III (-, -)
+    [InlineData(0.0, 0.0, 45, -45, 2)] // Quadrant IV (+, -)
+    [InlineData(-25.0, -25.0, 50, 50, 5)] // 25 km^2 of all quadrants
+    [InlineData(-45.0, -45.0, 90, 90, 9)] // The whole plane
+    public void TestFilterByLocation_ValidInput(double startX, double startY, int width, int height, int expected)
+    {
+        // Arrange
+        var source = SupplyValidShops();
+        var geoCoordinate = new GeoCoordinate(startX, startY);
 
+        // Act
+        var actual = _shopService.FilterByLocation(source, geoCoordinate, width, height);
+
+        // Assert
+        Assert.Equal(expected, actual.Count);
+    }
+    
+    
+    [Fact]
+    public void TestFilterByLocation_NullVallues()
+    {
+        // Arrange
+        string errorMsg = "Something went wrong, try again later.";
+
+        // Act + Assert
+        var ex = Assert.Throws<NullReferenceException>(() => _shopService.FilterByLocation(null, null, 45, 45));
+        Assert.Equal(errorMsg, ex.Message);
+    }
+    
+    [Fact]
+    public void TestFilterByLocation_EmptyListOfShops()
+    {
+        // Arrange
+        var source = new List<Entities.Shop>();
+        var geoLocation = new GeoCoordinate(0.0, 0.0);
+        string errorMsg = "Unable to find shops near your location.";
+
+        // Act + Assert
+        var ex = Assert.Throws<ArgumentException>(() => _shopService.FilterByLocation(source, geoLocation, 45, 45));
+        Assert.Equal(errorMsg, ex.Message);
+    }
+    
 
     static List<Entities.Shop> SupplyValidShops()
     {
