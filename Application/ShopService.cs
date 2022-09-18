@@ -15,22 +15,11 @@ public class ShopService : IShopService
             throw new ArgumentOutOfRangeException("Your location is unknown, try a different location.");
         if (source.Count <= 0)
             throw new ArgumentException("Unable to find shops near your location.");
-        
-        
-        var shopsNearby = source.OrderBy(x => new GeoCoordinate(x._gpsLocation.Longitude, x._gpsLocation.Latitude).GetDistanceTo(new GeoCoordinate(y.Longitude, y.Latitude))).ToList();
 
-        foreach (var shop in shopsNearby.ToList())
-        {
-            var g = shop._gpsLocation;
-            
-            //If the shops in the list is outside the specified range of the plane, remove them from the list.
-            if (g.Latitude < -45.0 || g.Longitude < -45.0 || g.Latitude > 45.0 || g.Longitude > 45.0)
-            {
-                shopsNearby.Remove(shop);
-            }
-        }
-        
-        return shopsNearby;
+        // Filter shops that are outside the bounds of the plane, then order by distance to the GeoCoordinate y
+        return source.Where(x => x._gpsLocation.Latitude >= -45.0 && x._gpsLocation.Longitude >= -45.0 && x._gpsLocation.Latitude <= 45.0 && x._gpsLocation.Longitude <= 45.0)
+            .OrderBy(x => new GeoCoordinate(x._gpsLocation.Longitude, x._gpsLocation.Latitude).GetDistanceTo(new GeoCoordinate(y.Longitude, y.Latitude)))
+            .ToList();
     }
 
     public List<Entities.Shop> FilterByLocation(List<Entities.Shop> source, GeoCoordinate y, int width, int height)
