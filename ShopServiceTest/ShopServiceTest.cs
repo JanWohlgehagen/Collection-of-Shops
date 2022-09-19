@@ -13,6 +13,8 @@ public class UnitTest1
         _shopService = new ShopService();
     }
     
+    #region Sort by distance
+    
     [Theory]
     [InlineData(0.0, 0.0, 0, "Pet World")] // First Element
     [InlineData(0.0, 0.0, 1, "Handy Mand John Johnson")] // Second Element
@@ -90,7 +92,10 @@ public class UnitTest1
         var ex = Assert.Throws<ArgumentException>(() => _shopService.SortByDistance(source, geoLocation));
         Assert.Equal(errorMsg, ex.Message);
     }
+    #endregion
     
+    
+    #region Filter by location
     
     [Theory]
     [InlineData(0.0, 0.0, 45, 45, 4)] // Quadrant I (+, +)
@@ -137,6 +142,9 @@ public class UnitTest1
         Assert.Equal(errorMsg, ex.Message);
     }
     
+    #endregion
+    
+    #region mock data
 
     static List<Entities.Shop> SupplyValidShops()
     {
@@ -171,4 +179,6 @@ public class UnitTest1
             new Entities.Shop(){Name = "Gamestop", website = "Gamestop.dk", Address = "H.C Andersensvej 2223", _gpsLocation = new Entities.GPSLocation(){Latitude = 57.5, Longitude = 7.5}},
         };
     }
+    
+    #endregion
 }
