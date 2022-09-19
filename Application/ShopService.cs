@@ -18,7 +18,7 @@ public class ShopService : IShopService
 
         // Filter shops that are outside the bounds of the plane, then order by distance to the GeoCoordinate y
         return source.Where(x => x._gpsLocation.Latitude >= -45.0 && x._gpsLocation.Longitude >= -45.0 && x._gpsLocation.Latitude <= 45.0 && x._gpsLocation.Longitude <= 45.0)
-            .OrderBy(x => new GeoCoordinate(x._gpsLocation.Longitude, x._gpsLocation.Latitude).GetDistanceTo(new GeoCoordinate(y.Longitude, y.Latitude)))
+            .OrderBy(x => new GeoCoordinate(x._gpsLocation.Longitude, x._gpsLocation.Latitude).GetDistanceTo(y))
             .ToList();
     }
 
