@@ -94,7 +94,6 @@ public class UnitTest1
     }
     #endregion
     
-    
     #region Filter by location
     
     [Theory]
