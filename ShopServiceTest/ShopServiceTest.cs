@@ -4,11 +4,11 @@ using GeoCoordinatePortable;
 
 namespace ShopServiceTest;
 
-public class UnitTest1
+public class ShopServiceTest
 {
 
     private ShopService _shopService;
-    public UnitTest1()
+    public ShopServiceTest()
     {
         _shopService = new ShopService();
     }
