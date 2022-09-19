@@ -144,7 +144,7 @@ public class UnitTest1
     
     #endregion
     
-    #region mock data
+    #region Mock data
 
     static List<Entities.Shop> SupplyValidShops()
     {
