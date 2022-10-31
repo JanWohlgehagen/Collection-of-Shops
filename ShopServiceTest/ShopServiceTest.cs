@@ -16,7 +16,7 @@ public class ShopServiceTest
     #region Sort by distance
     
     [Theory]
-    [InlineData(0.0, 0.0, 0, "Pet World")] // First Element
+    [InlineData(0.0, 0.0, 0, "123")] // First Element
     [InlineData(0.0, 0.0, 1, "Handy Mand John Johnson")] // Second Element
     [InlineData(0.0, 0.0, 8, "EASV")] // Last Element
     public void TestSortByDistanceValidData(double latitude, double longitude, int index, string ShopName)
